@@ -1,0 +1,14 @@
+{% extends 'base.html'%}
+
+{% block content %}
+    <ul class="all_users">
+        {% if not_friends %}
+            {% for user in not_friends %}
+                <h1>{{user}} <a href="/users/send_friend_request/{{user.id}}/"> 
+                    manda richiesta di amicizia</a></h1>
+            {% endfor %}
+        {% else %}
+            Non ci sono utenti a cui richiedere l'amicizia
+        {% endif %}
+    </ul>
+{% endblock %}

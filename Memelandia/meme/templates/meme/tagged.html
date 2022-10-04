@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+Tutti i meme con il tag {{view.kwargs.tag_slug}}:
+
+<ul>
+    {% for meme in object_list %}
+        {{meme.user}} <a href="{% url 'meme:meme_detail' meme.pk %}"> {{meme.title}} </a>
+        <br>
+    {% endfor %}
+</ul>
+
+{% endblock %}

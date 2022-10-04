@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <center>
+        {% if searched %}
+            <h1>Hai cercato per {{searched}}</h1>
+            <br>
+            {% if utenti.count > 0 %}
+                <h2> Utenti: </h2>
+                {% for utente in utenti %}
+                    {{utente}} - <a href="{% url 'meme:bacheca' utente %}">bacheca </a>
+                    {% if not utente.profile in friends %}
+                        - <a href="/users/send_friend_request/{{utente.id}}/"> manda richiesta di amicizia </a>
+                    {% endif %}
+                    <br>
+                {% endfor %}
+                <br><br>
+            {% endif %}
+            
+            {% if tags.count > 0 %}
+                <h2> Tags: </h2>
+                {% for tag in tags %}
+                    - <a href="{% url 'meme:memes_by_tag' tag %}"> {{tag}} </a>
+                    <br>
+                {% endfor %}
+            {% endif %}
+        {% else %}
+            <h1>Non hai selezionato niente</h1>
+        {% endif %}
+    </center>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+<h2>Gli amici di {{user.username}}</h2>
+<ul class="all_users">
+    {% if friends %}
+        {% for user in friends %}
+            <h3>{{user}} <a href="/meme/bacheca/{{user.username}}"> 
+                vedi i suoi memes</a></h3>
+        {% endfor %}
+    {% else %}
+        Al momento non hai nessuna amicizia su Memelandia
+    {% endif %}        
+</ul>
+
+{% endblock %}

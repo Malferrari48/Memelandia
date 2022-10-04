@@ -1,0 +1,50 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+{% block title %}Profile Page{% endblock title %}
+    <div class="row my-3 p-3 justify-content-center">
+        <img class="rounded-circle account-img" src="{{ user.profile.avatar.url }}" style="cursor: pointer;">
+    </div>
+    {% if user_form.errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div id="form_errors">
+                {% for key, value in user_form.errors.items %}
+                    <strong>{{ value }}</strong>
+                {% endfor %}
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+    <div class="form-content">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-row justify-content-center">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="small mb-1">Username:</label>
+                            {{ user_form.username }}
+                        <label class="small mb-1">Email:</label>
+                            {{ user_form.email }}
+                    </div>
+                    <div class="form-group">
+                        <hr>
+                        <label class="small mb-1">Change Avatar:</label>
+                        {{ profile_form.avatar }}
+                    </div>
+                    <label class="small mb-1">Bio:</label> {{ profile_form.bio }}
+                    <br><br>
+                    <label class="small mb-1">Private?</label> {{ profile_form.is_private }}
+                </div>
+            </div>
+            <br><br>
+            <button type="submit" class="btn btn-dark btn-lg">Save Changes</button>
+        </form>
+    </div>
+    <p style="position:absolute; top:750px; right:50px;">
+        Nota bene: <br>
+        Se il profilo è privato solo i tuoi amici potranno vedere i tuoi meme
+    </p>
+{% endblock %}

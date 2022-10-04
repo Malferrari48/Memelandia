@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if object_list %} 
+    <h1> {{ view.kwargs.username }} </h1><img src="/media/{{object_list.0.user.profile.avatar}}" alt="Immagine non trovata">
+    <p> {{object_list.0.user.profile.bio}} </p>
+    <p> Ecco i suoi meme: </p>
+{% else %}
+    <h1> {{ view.kwargs.username }} </h1>
+{% endif %}
+
+<ul>
+    {% if object_list %}    
+        {% for meme in object_list %}
+            <a href="{% url 'meme:meme_detail' meme.pk %}">
+                <img src="/media/{{meme.picture}}" alt="Meme non trovato">
+            </a>
+            <br>
+            <br>
+        {% endfor %}
+    {% else %}
+        Il profilo è privato oppure non ha ancora postato memes
+    {% endif %}
+</ul>
+
+{% endblock content %}

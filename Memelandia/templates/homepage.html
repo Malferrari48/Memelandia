@@ -1,0 +1,37 @@
+
+{% extends 'base.html' %}
+
+{% block title %} 
+<center>
+    <h1 class="display-1">
+{{title}}
+</center>
+
+{% endblock %}
+
+{% block content %}
+    <center>
+        <h1> Memelandia </h1>
+    </center>
+    <ul>
+        {% for meme in memesAmici %}
+            <a href="{% url 'meme:meme_detail' meme.pk %}">
+                <img src="/media/{{meme.picture}}" alt="django xd">
+            </a>
+        {% endfor %}
+        {% for meme in memes %}
+            <a href="{% url 'meme:meme_detail' meme.pk %}">
+                <img src="/media/{{meme.picture}}" alt="django xd">
+            </a>
+        {% endfor %}
+        <br>
+        <br>
+        <div style="position:absolute; top:110px; right:20px; border-style: dotted;">
+            Tags pubblici più usati <br> per i meme: <br>
+            {% for tag in tags_usati %}
+                ° <a href="{% url 'meme:memes_by_tag' tag %}"> {{tag}} </a> <br>
+            {% endfor %}
+        </div>
+    </ul>
+
+{% endblock %}

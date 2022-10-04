@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <center>    
+
+    {% if meme == None %}
+        Il profilo che ha creato il meme è privato
+    {% else %}
+        <h2><a href="/meme/bacheca/{{meme.user}}">{{meme.user}}</a> <img src="/media/{{meme.user.profile.avatar}}" alt="Profilo" width="70"></h2>
+        {% if meme.userOriginal != meme.user %}
+            <h2>Utente originale: <a href="{% url 'meme:bacheca' meme.userOriginal %}"> {{meme.userOriginal}} </a> </h2>
+        {% endif %}
+        <br>
+        {% for tag in meme.tags.all %}
+            <a href="{% url 'meme:memes_by_tag' tag.slug %}"> {{tag.name}} </a>
+        {% endfor %}
+        <br>
+        <img src="{{ meme.picture.url }}">
+
+        <div class="d-flex flex-row justify-content-center">
+            <form method="POST" action="{% url 'meme:like' meme.pk %}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.path }}">
+                {% if user.is_authenticated %}
+                    <button class="btn btn-block btn-primary" type="submit">
+                        <i class="far fa-thumbs-up"> Like <span>{{ meme.likes.all.count }}</span> </i>
+                    </button>
+                {% else %}
+                    <a href="/users/login?next={{request.path}}">
+                        <button type="button" onclick='alert("Devi prima effettuare il login");' class="btn btn-primary">Like {{ meme.likes.all.count }}</button>
+                    </a>
+                {% endif %}
+            </form>
+
+            <form method="POST" action="{% url 'meme:dislike' meme.pk %}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.path }}">
+                {% if user.is_authenticated %}
+                    <button class="btn btn-block btn-primary" type="submit">
+                        <i class="far fa-thumbs-down"> Dislike <span>{{ meme.dislikes.all.count }}</span> </i>
+                    </button>
+                {% else %}
+                    <a href="/users/login?next={{request.path}}">
+                        <button type="button" onclick='alert("Devi prima effettuare il login");' class="btn btn-primary">Disike {{ meme.dislikes.all.count }}</button>
+                    </a>
+                {% endif %}
+            </form>
+
+            {% if not request.user == meme.user and meme.user.profile.is_private == False %}
+                <form method="POST" action="{% url 'meme:forward' meme.pk %}">
+                    {% csrf_token %}
+                    {% if user.is_authenticated %}
+                        <button class="btn btn-block btn-primary" type="submit">
+                            <i class="far fa-thumbs-down"> Inoltra </i>
+                        </button>
+                    {% endif %}
+                </form>
+                {% endif %}
+        </div>
+
+        <h2>Comments:</h2>
+
+        {% if not meme.comments.all %}
+            No comments yet...<a href="{% url 'meme:add_comment' meme.pk %}">
+                add one </a>
+        {% else %}
+            {% for comment in meme.comments.all %}
+            <strong>
+                {{ comment.user }} - {{ comment.created }}
+            </strong>
+            <br>
+            {{ comment.body }}
+            <br>
+            <br>
+            {% endfor %}
+            <a onclick='alert("Devi prima effettuare il login");' href="{% url 'meme:add_comment' meme.pk %}"> Add comment </a>
+        {% endif %}
+    {% endif %}
+{% endblock %}

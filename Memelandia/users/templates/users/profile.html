@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+{% block title %}<h1>Profile Page</h1>{% endblock title %}
+        <h2>This is the profile page for {{user.username}}</h2>
+        {% if user.email %}
+                <h2>Email: {{user.email}} </h2>
+        {% else %}
+                <h2>Email: Non inserita </h2>
+        {% endif %}
+        <img src="{{ user.profile.avatar.url }}">
+        {% if user.bio %}
+                <h2>Bio: {{user.bio}} </h2>
+        {% else %}
+                <h2>Bio: Non inserita</h2>
+        {% endif %}
+        <h2>Private: {{profile.is_private}}</h2>
+        <br>
+        <br>
+        <button onclick="window.location.href='/users/profile_update'">Torna indietro</button>
+        <button onclick="window.location.href='/'">Continue</button>
+{% endblock %}

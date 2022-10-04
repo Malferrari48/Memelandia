@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if all_friend_requests %}
+        {% for friend_request in all_friend_requests %}
+            {% if friend_request.to_user == request.user.profile %}
+                <h1>{{friend_request.from_user}}
+                    <a href="/users/accept_friend_request/{{friend_request.id}}/">
+                        accetta richiesta di amicizia
+                    </a>
+                </h1>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        Al momento non c'è nessuna richiesta d'amicizia da accettare
+    {% endif %}
+{% endblock %}
